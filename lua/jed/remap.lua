@@ -8,6 +8,7 @@ vim.keymap.set("v", "<C-K>", ":m '<-2<CR>gv=gv")
 vim.keymap.set("n", "<F17>", "<cmd>lua require('jed.utils').run()<CR>")
 vim.keymap.set("n", "<F21>", "<cmd>lua require('jed.utils').test()<CR>")
 vim.keymap.set("n", "<A-b>", "<cmd>lua require('jed.utils').build()<CR>")
+vim.keymap.set("n", "<Leader>co", "<cmd>lua require('jed.utils').coverage()<CR>")
 
 vim.keymap.set("i", '"', '""<left>')
 vim.keymap.set("i", "'", "''<left>")
