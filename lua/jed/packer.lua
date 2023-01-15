@@ -65,4 +65,6 @@ return require('packer').startup(function(use)
     use 'mfussenegger/nvim-lint'
     use 'leoluz/nvim-dap-go'
     use 'preservim/nerdcommenter'
+    use 'tomasiser/vim-code-dark'
+    use 'marko-cerovac/material.nvim'
 end)

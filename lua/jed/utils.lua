@@ -16,7 +16,7 @@ end
 
 function M.test()
     if vim.bo.filetype == 'go' then 
-        vim.cmd('silent wa | term go test')
+        vim.cmd('silent wa | term go test ./...')
     end
 end
 
