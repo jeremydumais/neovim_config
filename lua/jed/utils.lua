@@ -16,13 +16,13 @@ end
 
 function M.test()
     if vim.bo.filetype == 'go' then 
-        vim.cmd('silent wa | term go test ./...')
+        vim.cmd('silent wa | term gotestsum --format dots-v2')
     end
 end
 
 function M.coverage()
     if vim.bo.filetype == 'go' then
-        vim.cmd('term go test -coverprofile cover.out && go tool cover -html cover.out -o cover.html')
+        vim.cmd('term go test -coverprofile cover.out ./... && go tool cover -html cover.out -o cover.html')
     end
 end
 return M
