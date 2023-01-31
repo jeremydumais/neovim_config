@@ -1,5 +1,7 @@
 vim.g.mapleader = "_"
 
+vim.keymap.set("x", "<leader>p", [["_dP]])
+
 --vim.keymap.set("n", "<C-e>", "<cmd>bp<bar>sp<bar>bn<bar>bd<cr>")
 vim.keymap.set("n", "<C-e>", "<cmd>bd<cr>")
 vim.keymap.set("n", "<C-a>", "ggVG")
