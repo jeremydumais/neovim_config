@@ -52,7 +52,13 @@ return require('packer').startup(function(use)
 	}
 
 --	use 'vim-airline/vim-airline'
-	use 'preservim/nerdtree'
+    use {
+      'nvim-tree/nvim-tree.lua',
+      requires = {
+        'nvim-tree/nvim-web-devicons', -- optional, for file icons
+      },
+      tag = 'nightly' -- optional, updated every week. (see issue #1193)
+    }
     use 'derekwyatt/vim-fswitch'
     use {
         'nvim-lualine/lualine.nvim',
