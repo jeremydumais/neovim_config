@@ -40,7 +40,9 @@ function M.run()
 end
 
 function M.build()
-    if vim.bo.filetype == 'go' then
+    if vim.bo.filetype == 'rust' then
+        vim.cmd('silent wa | term cargo build')
+    elseif vim.bo.filetype == 'go' then
         vim.cmd('silent wa | term go build')
     elseif vim.bo.filetype == 'cpp' then
         vim.cmd('silent wa | term cd build && cmake --build ' .. M.get_cpp_what_to_build() .. ' --parallel 8')
@@ -51,7 +53,9 @@ function M.build()
 end
 
 function M.test()
-    if vim.bo.filetype == 'go' then
+    if vim.bo.filetype == 'rust' then
+        vim.cmd('silent wa | term cargo test -q')
+    elseif vim.bo.filetype == 'go' then
         vim.cmd('silent wa | term gotestsum --format dots-v2')
     elseif vim.bo.filetype == 'cpp' then
         vim.cmd('silent wa | term cd build && cmake --build ' .. M.get_cpp_what_to_build() .. ' --parallel 8 && ctest --progress --parallel 8')
@@ -64,6 +68,19 @@ end
 function M.coverage()
     if vim.bo.filetype == 'go' then
         vim.cmd('term go test -coverprofile cover.out ./... && go tool cover -html cover.out -o cover.html')
+    elseif vim.bo.filetype == 'cpp' then
+        vim.cmd('!cd build && find . -type f -name "*.gcda" -print0 | xargs -I {} -0 rm -v "{}"')
+        vim.cmd('!cd build && ctest --progress --parallel 8')
+
+        vim.cmd('!cd build && lcov -c -d . -o main_coverage.info')
+        vim.cmd('!cd build && lcov -r main_coverage.info "*/test/*" -o main_coverage.info')
+        vim.cmd('!cd build && lcov -r main_coverage.info "*/.conan/*" -o main_coverage.info')
+        vim.cmd('!cd build && lcov -r main_coverage.info "*_autogen*" -o main_coverage.info')
+        vim.cmd('!cd build && lcov -r main_coverage.info "/usr*" -o main_coverage.info')
+        vim.cmd('!cd build && lcov -r main_coverage.info "*fmt*" -o main_coverage.info')
+        vim.cmd('!cd build && lcov -r main_coverage.info "*boost*" -o main_coverage.info')
+        vim.cmd('!cd build && lcov -r main_coverage.info "*gtest*" -o main_coverage.info')
+        vim.cmd('!cd build && genhtml main_coverage.info --output-directory out')
     end
 end
 return M
