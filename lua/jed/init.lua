@@ -20,3 +20,4 @@ vim.api.nvim_create_user_command("SetProject", function(opts)
 
 vim.api.nvim_create_user_command("ClearProject", function()
     require('jed.utils').clear_project() end, {})
+

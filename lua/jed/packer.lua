@@ -66,8 +66,11 @@ return require('packer').startup(function(use)
     }
     use {'akinsho/bufferline.nvim', tag = "v3.*", requires = 'nvim-tree/nvim-web-devicons'}
     use 'mortepau/codicons.nvim'
+    use 'simrat39/rust-tools.nvim'
+    use 'nvim-lua/plenary.nvim'
     use 'mfussenegger/nvim-dap'
     use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} }
+    use  'theHamsta/nvim-dap-virtual-text'
     use 'mfussenegger/nvim-lint'
     use 'leoluz/nvim-dap-go'
     use 'preservim/nerdcommenter'

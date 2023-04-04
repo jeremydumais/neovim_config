@@ -46,10 +46,23 @@ dap.configurations.cpp = {
   },
 }
 
--- If you want to use this for Rust and C, add something like this:
-
 dap.configurations.c = dap.configurations.cpp
-dap.configurations.rust = dap.configurations.cpp
+dap.configurations.rust = {
+  {
+    name = 'Launch',
+    type = 'codelldb',
+    request = 'launch',
+    program = function()
+      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+    end,
+    cwd = '${workspaceFolder}',
+    stopOnEntry = false,
+    args = {
+        "--test-threads",
+        "1",
+    },
+  },
+}
 
 require("dapui").setup()
 
@@ -64,5 +77,5 @@ vim.keymap.set("n", "<Leader>lp", "<Cmd>lua require'dap'.set_breakpoint(nil, nil
 vim.keymap.set("n", "<Leader>dr", "<Cmd>lua require'dap'.repl.open()<CR>")
 vim.keymap.set("n", "<Leader>dl", "<Cmd>lua require'dap'.run_last()<CR>")
 vim.keymap.set("n", "<Leader>df", "<Cmd>lua require'dapui'.toggle()<CR>")
-vim.keymap.set("n", "<M-k>", "<cmd>lua require('dapui').eval()<cr>")
+vim.keymap.set("n", "<Leader>k", "<cmd>lua require('dapui').eval()<cr>")
 
