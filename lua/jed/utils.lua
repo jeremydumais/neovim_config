@@ -62,6 +62,12 @@ function M.test()
         local current_window = vim.api.nvim_get_current_win()
         local last_line = vim.api.nvim_buf_line_count(0)
         vim.api.nvim_win_set_cursor(current_window, {last_line, 0})
+    elseif vim.bo.filetype == 'c' then
+        if vim.g.ctestcmd == nil then
+            print("You must first define the ctestcmd variable like this :lua vim.g.ctestcmd = '<binaryToRun>'")
+            return
+        end
+        vim.cmd('silent wa | term ' .. vim.g.ctestcmd)
     end
 end
 
