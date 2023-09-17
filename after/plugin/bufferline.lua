@@ -1,11 +1,11 @@
 vim.opt.termguicolors = true
 require("bufferline").setup {
-    options = { 
+    options = {
         color_icons = true,
         separator_style = "thin",
         always_show_bufferline = true,
         diagnostics = "nvim_lsp",
-    
+
         diagnostics_indicator = function(count, level, diagnostics_dict, context)
             local s = " "
             for e, n in pairs(diagnostics_dict) do

@@ -1,4 +1,5 @@
 require("lint").linters_by_ft = {
+   c = { "cpplint" },
    cpp = { "cpplint", "cppcheck" },
    go = { "revive", "staticcheck", "golangcilint" },
    lua = { "luacheck" }

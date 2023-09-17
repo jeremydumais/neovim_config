@@ -9,7 +9,7 @@ lsp.on_attach(function(client, bufnr)
       vim.cmd.LspStop('eslint')
       return
   end
-
+  require "lsp_signature".on_attach(signature_setup, bufnr)
 end)
 
 lsp.setup()

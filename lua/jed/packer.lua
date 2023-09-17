@@ -39,6 +39,11 @@ return require('packer').startup(function(use)
 		}
 	}
 
+    --Show method overloads
+    use {
+      "ray-x/lsp_signature.nvim",
+    }
+
 	use {
 		"folke/trouble.nvim",
 		requires = "kyazdani42/nvim-web-devicons",
@@ -64,10 +69,11 @@ return require('packer').startup(function(use)
         'nvim-lualine/lualine.nvim',
         requires = { 'kyazdani42/nvim-web-devicons', opt = true }
     }
-    use {'akinsho/bufferline.nvim', tag = "v3.*", requires = 'nvim-tree/nvim-web-devicons'}
+    use {'akinsho/bufferline.nvim', tag = "*", requires = 'nvim-tree/nvim-web-devicons'}
     use 'mortepau/codicons.nvim'
     use 'simrat39/rust-tools.nvim'
     use 'nvim-lua/plenary.nvim'
+    use 'folke/todo-comments.nvim'
     use 'mfussenegger/nvim-dap'
     use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} }
     use  'theHamsta/nvim-dap-virtual-text'
@@ -76,4 +82,20 @@ return require('packer').startup(function(use)
     use 'preservim/nerdcommenter'
     use 'tomasiser/vim-code-dark'
     use 'marko-cerovac/material.nvim'
+    use({
+        "jackMort/ChatGPT.nvim",
+        --config = function()
+            --require("chatgpt").setup()
+        --end,
+        config = function()
+            require("chatgpt").setup({
+                api_key_cmd = "more /home/jed/chatsecret.txt 2>/dev/null"
+            })
+        end,
+        requires = {
+          "MunifTanjim/nui.nvim",
+          "nvim-lua/plenary.nvim",
+          "nvim-telescope/telescope.nvim"
+        }
+    })
 end)
