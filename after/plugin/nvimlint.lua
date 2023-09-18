@@ -1,6 +1,6 @@
 require("lint").linters_by_ft = {
    c = { "cpplint" },
-   cpp = { "cpplint", "cppcheck" },
+   cpp = { "cpplint", "cppcheck", "clangtidy" },
    go = { "revive", "staticcheck", "golangcilint" },
    lua = { "luacheck" }
 }
@@ -8,11 +8,32 @@ require("lint").linters_by_ft = {
 local cpplint = require('lint').linters.cpplint
 cpplint.args = {
   '--filter=-whitespace/line_length,-build/include_subdir,-legal/copyright',
+  '--quiet'
+}
+
+local cppcheck = require('lint').linters.cppcheck
+cppcheck.args = {
+    '--enable=warning,style,performance,portability',
+    '-I include',
+    '--language=c++',
+    '--std=c++17',
+    '--template={file}:{line}:{column}: [{id}] {severity}: {message}',
+    '--inline-suppr',
+    '--quiet'
 }
 
 local clangtidy = require('lint').linters.clangtidy
 clangtidy.args = {
-  '-p build'
+    '--extra-arg=-Wall',
+    '--extra-arg=-Weverything',
+    '--extra-arg=-pedantic',
+    '--extra-arg=-std=c++17',
+    '--extra-arg=-Wdocumentation',
+    '--extra-arg=-Wno-c++98-compat',
+    '--extra-arg=-Wno-missing-prototypes',
+    '--extra-arg=-Wno-old-style-cast', --cpplint provides much more info
+    '-p=build',
+    '--quiet'
 }
 
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {
