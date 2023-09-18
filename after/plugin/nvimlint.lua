@@ -16,7 +16,7 @@ cppcheck.args = {
     '--enable=warning,style,performance,portability',
     '-I include',
     '--language=c++',
-    '--std=c++17',
+    '--std=c++20',
     '--template={file}:{line}:{column}: [{id}] {severity}: {message}',
     '--inline-suppr',
     '--quiet'
@@ -27,7 +27,7 @@ clangtidy.args = {
     '--extra-arg=-Wall',
     '--extra-arg=-Weverything',
     '--extra-arg=-pedantic',
-    '--extra-arg=-std=c++17',
+    '--extra-arg=-std=c++20',
     '--extra-arg=-Wdocumentation',
     '--extra-arg=-Wno-c++98-compat',
     '--extra-arg=-Wno-missing-prototypes',
