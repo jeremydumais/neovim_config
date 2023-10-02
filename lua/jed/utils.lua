@@ -23,6 +23,8 @@ function M.get_cpp_what_to_build()
 end
 
 function M.run()
+    vim.g.buf_num = vim.fn.bufnr('%')
+    vim.keymap.set("n", "<C-e>", string.format("<cmd>bp|bd #|buffer %d<cr>", vim.g.buf_num))
     if vim.bo.filetype == 'rust' then
         vim.cmd('silent wa | term cargo run')
     elseif vim.bo.filetype == 'go' then
@@ -40,6 +42,8 @@ function M.run()
 end
 
 function M.build()
+    vim.g.buf_num = vim.fn.bufnr('%')
+    vim.keymap.set("n", "<C-e>", string.format("<cmd>bp|bd #|buffer %d<cr>", vim.g.buf_num))
     if vim.bo.filetype == 'rust' then
         vim.cmd('silent wa | term cargo build')
     elseif vim.bo.filetype == 'go' then
@@ -53,6 +57,8 @@ function M.build()
 end
 
 function M.test()
+    vim.g.buf_num = vim.fn.bufnr('%')
+    vim.keymap.set("n", "<C-e>", string.format("<cmd>bp|bd #|buffer %d<cr>", vim.g.buf_num))
     if vim.bo.filetype == 'rust' then
         vim.cmd('silent wa | term cargo test -q')
     elseif vim.bo.filetype == 'go' then
@@ -72,6 +78,8 @@ function M.test()
 end
 
 function M.coverage()
+    vim.g.buf_num = vim.fn.bufnr('%')
+    vim.keymap.set("n", "<C-e>", string.format("<cmd>bp|bd #|buffer %d<cr>", vim.g.buf_num))
     if vim.bo.filetype == 'go' then
         vim.cmd('term go test -coverprofile cover.out ./... && go tool cover -html cover.out -o cover.html')
     elseif vim.bo.filetype == 'cpp' then
