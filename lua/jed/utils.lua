@@ -64,7 +64,11 @@ function M.test()
     elseif vim.bo.filetype == 'go' then
         vim.cmd('silent wa | term gotestsum --format dots-v2')
     elseif vim.bo.filetype == 'cpp' then
-        vim.cmd('silent wa | term cd build && cmake --build ' .. M.get_cpp_what_to_build() .. ' --parallel 8 && ctest --progress --parallel 8')
+        if vim.g.cpptest == nil then
+            vim.cmd('silent wa | term cd build && cmake --build ' .. M.get_cpp_what_to_build() .. ' --parallel 8 && ctest --progress --parallel 8')
+        else
+            vim.cmd('silent wa | term cd build && cmake --build ' .. M.get_cpp_what_to_build() .. ' --parallel 8 && ' .. vim.g.cpptest)
+        end
         local current_window = vim.api.nvim_get_current_win()
         local last_line = vim.api.nvim_buf_line_count(0)
         vim.api.nvim_win_set_cursor(current_window, {last_line, 0})
