@@ -2,7 +2,10 @@ require("lint").linters_by_ft = {
    c = { "cpplint" },
    cpp = { "cpplint", "cppcheck", "clangtidy" },
    go = { "revive", "staticcheck", "golangcilint" },
-   lua = { "luacheck" }
+   lua = { "luacheck" },
+   javascript = { "eslint" },
+   typescript = { "eslint" },
+   typescriptreact = { "eslint" }
 }
 
 local cpplint = require('lint').linters.cpplint
