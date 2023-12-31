@@ -78,7 +78,7 @@ function M.test()
             return
         end
         vim.cmd('silent wa | term ' .. vim.g.ctestcmd)
-    elseif vim.bo.filetype == 'javascript' then
+    elseif vim.bo.filetype == 'javascript' or vim.bo.filetype == 'typescript' or vim.bo.filetype == 'typescriptreact' then
         vim.cmd('silent wa | term npx jest')
     end
 end
