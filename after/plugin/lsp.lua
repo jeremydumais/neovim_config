@@ -1,6 +1,11 @@
 local lsp = require('lsp-zero')
 lsp.preset('recommended')
 
+lsp.ensure_installed({
+  'tsserver',
+  'rust_analyzer',
+})
+
 lsp.setup()
 lsp.on_attach(function(client, bufnr)
   local opts = {buffer = bufnr, remap = false}

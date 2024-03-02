@@ -5,7 +5,7 @@ require("lint").linters_by_ft = {
    lua = { "luacheck" },
    javascript = { "eslint" },
    typescript = { "eslint" },
-   typescriptreact = { "eslint" }
+   typescriptreact = { "eslint" },
 }
 
 local cpplint = require('lint').linters.cpplint
