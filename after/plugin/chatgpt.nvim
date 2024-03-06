@@ -1,3 +1,0 @@
-require("chatgpt").setup({
-    api_key_cmd = "gpg --decrypt ~/chatsecret.txt.gpg 2>/dev/null"
-})

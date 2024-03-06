@@ -1,12 +1,16 @@
 local lsp = require('lsp-zero')
 lsp.preset('recommended')
 
-lsp.ensure_installed({
-  'tsserver',
-  'rust_analyzer',
+require('mason').setup({})
+require('mason-lspconfig').setup({
+  -- Replace the language servers listed here
+  -- with the ones you want to install
+  ensure_installed = {'tsserver', 'rust_analyzer'},
+  handlers = {
+    lsp.default_setup,
+  },
 })
 
-lsp.setup()
 lsp.on_attach(function(client, bufnr)
   local opts = {buffer = bufnr, remap = false}
 
@@ -17,10 +21,44 @@ lsp.on_attach(function(client, bufnr)
   require "lsp_signature".on_attach(signature_setup, bufnr)
 end)
 
+local cmp = require('cmp')
+local cmp_action = require('lsp-zero').cmp_action()
+
+cmp.setup({
+    window = {
+        completion = cmp.config.window.bordered(),
+        documentation = cmp.config.window.bordered(),
+    },
+    mapping = cmp.mapping.preset.insert({
+        ['<C-Space>'] = cmp.mapping.complete(),
+        ['<C-f>'] = cmp_action.luasnip_jump_forward(),
+        ['<C-b>'] = cmp_action.luasnip_jump_backward(),
+        ['<C-u>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-d>'] = cmp.mapping.scroll_docs(4),
+        ['<cr>'] = cmp.mapping.confirm({select = true}),
+    })
+})
+
+
+--local cmp_select = {behavior = cmp.SelectBehavior.Select}
+--local cmp_mappings = lsp.defaults.cmp_mappings({
+  --['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
+  --['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+  --['<C-y>'] = cmp.mapping.confirm({ select = true }),
+  --["<C-Space>"] = cmp.mapping.complete(),
+--})
+
+--lsp.setup_nvim_cmp({
+  --mapping = cmp_mappings
+--})
+
 lsp.setup()
 
 vim.diagnostic.config({
     virtual_text = true,
+    signs = true,
+    underline = true,
+    update_in_insert = false,
 })
 
 vim.g.diagnostics_active = true
