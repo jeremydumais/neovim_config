@@ -89,22 +89,19 @@ return require('packer').startup(function(use)
     use 'preservim/nerdcommenter'
     use 'tomasiser/vim-code-dark'
     use 'marko-cerovac/material.nvim'
-    use({
-        "jackMort/ChatGPT.nvim",
+    --use({
+        --"jackMort/ChatGPT.nvim",
         --config = function()
-            --require("chatgpt").setup()
+            --require("chatgpt").setup({
+                --api_key_cmd = "more /home/jed/chatsecret.txt 2>/dev/null"
+            --})
         --end,
-        config = function()
-            require("chatgpt").setup({
-                api_key_cmd = "more /home/jed/chatsecret.txt 2>/dev/null"
-            })
-        end,
-        requires = {
-          "MunifTanjim/nui.nvim",
-          "nvim-lua/plenary.nvim",
-          "nvim-telescope/telescope.nvim"
-        }
-    })
+        --requires = {
+          --"MunifTanjim/nui.nvim",
+          --"nvim-lua/plenary.nvim",
+          --"nvim-telescope/telescope.nvim"
+        --}
+    --})
     use 'Asheq/close-buffers.vim'
 
     use('jose-elias-alvarez/null-ls.nvim')

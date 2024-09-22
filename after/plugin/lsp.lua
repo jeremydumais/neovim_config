@@ -2,7 +2,6 @@ local lsp = require('lsp-zero')
 lsp.preset('recommended')
 
 lsp.ensure_installed({
-  'tsserver',
   'rust_analyzer',
   'clangd',
   'eslint',
@@ -26,15 +25,48 @@ lsp.configure('lua_ls', {
   },
 })
 
-lsp.setup()
 lsp.on_attach(function(client, bufnr)
   vim.g.opts = {buffer = bufnr, remap = false}
 end)
+
+local cmp = require('cmp')
+local cmp_action = require('lsp-zero').cmp_action()
+
+cmp.setup({
+    window = {
+        completion = cmp.config.window.bordered(),
+        documentation = cmp.config.window.bordered(),
+    },
+    mapping = cmp.mapping.preset.insert({
+        ['<C-Space>'] = cmp.mapping.complete(),
+        ['<C-f>'] = cmp_action.luasnip_jump_forward(),
+        ['<C-b>'] = cmp_action.luasnip_jump_backward(),
+        ['<C-u>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-d>'] = cmp.mapping.scroll_docs(4),
+        ['<cr>'] = cmp.mapping.confirm({select = true}),
+    })
+})
+
+
+--local cmp_select = {behavior = cmp.SelectBehavior.Select}
+--local cmp_mappings = lsp.defaults.cmp_mappings({
+  --['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
+  --['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+  --['<C-y>'] = cmp.mapping.confirm({ select = true }),
+  --["<C-Space>"] = cmp.mapping.complete(),
+--})
+
+--lsp.setup_nvim_cmp({
+  --mapping = cmp_mappings
+--})
 
 lsp.setup()
 
 vim.diagnostic.config({
     virtual_text = true,
+    signs = true,
+    underline = true,
+    update_in_insert = false,
 })
 
 vim.g.diagnostics_active = true
