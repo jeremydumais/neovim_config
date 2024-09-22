@@ -44,6 +44,10 @@ return require('packer').startup(function(use)
       "ray-x/lsp_signature.nvim",
     }
 
+    use {
+        "windwp/nvim-ts-autotag"
+    }
+
 	use {
 		"folke/trouble.nvim",
 		requires = "kyazdani42/nvim-web-devicons",
@@ -75,7 +79,10 @@ return require('packer').startup(function(use)
     use 'nvim-lua/plenary.nvim'
     use 'folke/todo-comments.nvim'
     use 'mfussenegger/nvim-dap'
-    use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} }
+    use { "rcarriga/nvim-dap-ui", requires = {
+        "mfussenegger/nvim-dap",
+        "nvim-neotest/nvim-nio"
+    } }
     use  'theHamsta/nvim-dap-virtual-text'
     use 'mfussenegger/nvim-lint'
     use 'leoluz/nvim-dap-go'
@@ -99,4 +106,9 @@ return require('packer').startup(function(use)
         }
     })
     use 'Asheq/close-buffers.vim'
+
+    use('jose-elias-alvarez/null-ls.nvim')
+    use('MunifTanjim/prettier.nvim')
+    use('roxma/vim-tmux-clipboard')
+    use('tmux-plugins/vim-tmux-focus-events')
 end)

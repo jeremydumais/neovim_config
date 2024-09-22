@@ -1,3 +1,4 @@
+local M = {}
 vim.g.mapleader = "_"
 
 vim.keymap.set("x", "<leader>p", [["_dP]])
@@ -32,3 +33,15 @@ vim.keymap.set("i", "[", "[]<left>")
 vim.keymap.set("i", "{", "{}<left>")
 vim.keymap.set("i", "{<CR>", "{<CR>}<ESC>O")
 
+vim.keymap.set("n", "<leader>t", ":term<CR>i")
+vim.keymap.set("n", "<leader>f", ":Telescope grep_string<CR>")
+vim.keymap.set("v", "<leader>f", ":Telescope grep_string<CR>")
+
+function M.searchFunction()
+    require('telescope.builtin').lsp_document_symbols({
+    symbols = {'method', 'function'},
+    symbol_width = 200
+})
+end
+vim.keymap.set("n", "<C-M-p>", M.searchFunction)
+vim.keymap.set("v", "<C-M-p>", M.searchFunction)

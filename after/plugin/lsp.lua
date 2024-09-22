@@ -4,17 +4,31 @@ lsp.preset('recommended')
 lsp.ensure_installed({
   'tsserver',
   'rust_analyzer',
+  'clangd',
+  'eslint',
+  'lua_ls',
+  'intelephense',
+  'powershell_es'
+})
+
+lsp.configure('lua_ls', {
+  cmd = { 'lua-language-server' },
+  settings = {
+    Lua = {
+      runtime = {
+        version = 'LuaJIT',
+        path = vim.split(package.path, ';'),
+      },
+      diagnostics = {
+        globals = { 'vim' },
+      },
+    },
+  },
 })
 
 lsp.setup()
 lsp.on_attach(function(client, bufnr)
-  local opts = {buffer = bufnr, remap = false}
-
-  if client.name == "eslint" then
-      vim.cmd.LspStop('eslint')
-      return
-  end
-  require "lsp_signature".on_attach(signature_setup, bufnr)
+  vim.g.opts = {buffer = bufnr, remap = false}
 end)
 
 lsp.setup()
@@ -43,13 +57,20 @@ function _G.toggle_diagnostics()
 end
 
 vim.api.nvim_set_keymap('n', '<leader>tt', ':call v:lua.toggle_diagnostics()<CR>',  {noremap = true, silent = true})
-vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-vim.keymap.set("n", "<leader>vws", vim.lsp.buf.workspace_symbol, opts)
-vim.keymap.set("n", "<leader>vd", vim.diagnostic.open_float, opts)
-vim.keymap.set("n", "[d", vim.diagnostic.goto_next, opts)
-vim.keymap.set("n", "]d", vim.diagnostic.goto_prev, opts)
-vim.keymap.set("n", "<leader>vca", vim.lsp.buf.code_action, opts)
-vim.keymap.set("n", "<leader>vrr", vim.lsp.buf.references, opts)
-vim.keymap.set("n", "<leader>vrn", vim.lsp.buf.rename, opts)
-vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
+vim.keymap.set("n", "gd", vim.lsp.buf.definition, vim.g.opts)
+vim.keymap.set("n", "K", vim.lsp.buf.hover, vim.g.opts)
+vim.keymap.set("n", "<leader>vws", vim.lsp.buf.workspace_symbol, vim.g.opts)
+vim.keymap.set("n", "<leader>vd", vim.diagnostic.open_float, vim.g.opts)
+vim.keymap.set("n", "[d", vim.diagnostic.goto_next, vim.g.opts)
+vim.keymap.set("n", "]d", vim.diagnostic.goto_prev, vim.g.opts)
+vim.keymap.set("n", "<leader>vca", vim.lsp.buf.code_action, vim.g.opts)
+vim.keymap.set("n", "<leader>vrr", vim.lsp.buf.references, vim.g.opts)
+vim.keymap.set("n", "<leader>vrn", vim.lsp.buf.rename, vim.g.opts)
+vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, vim.g.opts)
+
+local bundle_path = '/home/jed/Programming/powershell-editor-services'
+
+require('lspconfig')['powershell_es'].setup {
+	bundle_path = bundle_path,
+	--on_attach = on_attach
+}
