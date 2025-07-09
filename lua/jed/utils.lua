@@ -61,8 +61,8 @@ function M.run()
         if vim.g.runargs ~= nil then
             goargs = vim.g.runargs
         end
-        vim.cmd('silent wa | term go build && go run . ' .. goargs)
-    elseif vim.bo.filetype == 'cpp' then
+        mvim.cmd('silent wa | term go build && go run . ' .. goargs)
+    elseif (vim.bo.filetype == 'cpp' or vim.bo.filetype == 'cmake') then
         if vim.g.cpprun == nil then
             print("You must first define the cpprun variable like this :lua vim.g.cpprun = '<binaryToRun>'")
             return
@@ -95,11 +95,12 @@ function M.build()
         vim.cmd('silent wa | term cargo build')
     elseif vim.bo.filetype == 'go' then
         vim.cmd('silent wa | term go build')
-    elseif vim.bo.filetype == 'cpp' then
-        vim.cmd('silent wa | term cd build && cmake --build ' .. M.get_cpp_what_to_build() .. ' --parallel 8')
-        local current_window = vim.api.nvim_get_current_win()
-        local last_line = vim.api.nvim_buf_line_count(0)
-        vim.api.nvim_win_set_cursor(current_window, {last_line, 0})
+    elseif (vim.bo.filetype == 'cpp' or vim.bo.filetype == 'cmake') then
+        vim.cmd('silent wa | CMakeBuild')
+        --vim.cmd('silent wa | term cd build && cmake --build ' .. M.get_cpp_what_to_build() .. ' --parallel 8')
+        --local current_window = vim.api.nvim_get_current_win()
+        --local last_line = vim.api.nvim_buf_line_count(0)
+        --vim.api.nvim_win_set_cursor(current_window, {last_line, 0})
     elseif ((vim.bo.filetype == 'c' or vim.bo.filetype == 'h') and M.hasMakefile())
             or vim.bo.filetype == 'make' then
         vim.cmd('silent wa | term make')
