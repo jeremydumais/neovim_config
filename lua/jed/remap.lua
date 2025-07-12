@@ -40,8 +40,8 @@ vim.keymap.set("v", "<leader>f", ":Telescope grep_string<CR>")
 function M.searchFunction()
     require('telescope.builtin').lsp_document_symbols({
     symbols = {'method', 'function'},
-    symbol_width = 200
+    symbol_width = 56
 })
 end
-vim.keymap.set("n", "<C-M-p>", M.searchFunction)
-vim.keymap.set("v", "<C-M-p>", M.searchFunction)
+vim.keymap.set("n", "<leader>fp", M.searchFunction)
+vim.keymap.set("v", "<leader>fp", M.searchFunction)
