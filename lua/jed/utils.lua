@@ -1,4 +1,62 @@
 local M = {}
+local cmake = require("cmake-tools")
+
+local function cpp_build()
+  cmake.build({}, function(res)
+    -- res can be a number (older code paths) or a table (most setups)
+    local exit =
+      (type(res) == "number" and res)
+      or (type(res) == "table" and (res.code or res.exit_code))
+      or -1
+
+    if exit == 0 then
+      vim.notify("✅ Build success!", vim.log.levels.INFO)
+    else
+      vim.notify("❌ Build failed (exit "..tostring(exit)..") — not running.", vim.log.levels.ERROR)
+    end
+  end)
+end
+
+local function cpp_build_and_run()
+  cmake.build({}, function(res)
+    -- res can be a number (older code paths) or a table (most setups)
+    local exit =
+      (type(res) == "number" and res)
+      or (type(res) == "table" and (res.code or res.exit_code))
+      or -1
+
+    if exit == 0 then
+        vim.cmd('term cd build && ./'
+            .. vim.g.cpprun)
+        local current_window = vim.api.nvim_get_current_win()
+        local last_line = vim.api.nvim_buf_line_count(0)
+        vim.api.nvim_win_set_cursor(current_window, {last_line, 0})
+      vim.notify("✅ Build success! Running the application...", vim.log.levels.INFO)
+    else
+      vim.notify("❌ Build failed (exit "..tostring(exit)..") — not running.", vim.log.levels.ERROR)
+    end
+  end)
+end
+
+local function cpp_build_and_test()
+  cmake.build({}, function(res)
+    -- res can be a number (older code paths) or a table (most setups)
+    local exit =
+      (type(res) == "number" and res)
+      or (type(res) == "table" and (res.code or res.exit_code))
+      or -1
+
+    if exit == 0 then
+        vim.cmd('term cd build && ctest --progress --parallel 8')
+        local current_window = vim.api.nvim_get_current_win()
+        local last_line = vim.api.nvim_buf_line_count(0)
+        vim.api.nvim_win_set_cursor(current_window, {last_line, 0})
+      vim.notify("✅ Build success! Running the unit tests...", vim.log.levels.INFO)
+    else
+      vim.notify("❌ Build failed (exit "..tostring(exit)..") — not running.", vim.log.levels.ERROR)
+    end
+  end)
+end
 
 function M.clear_project()
     vim.g.projectbuild = nil
@@ -67,13 +125,7 @@ function M.run()
             print("You must first define the cpprun variable like this :lua vim.g.cpprun = '<binaryToRun>'")
             return
         end
-        vim.cmd('silent wa | term cd build && cmake --build '
-            .. M.get_cpp_what_to_build()
-            ..' --parallel 8 && ./'
-            .. vim.g.cpprun)
-        local current_window = vim.api.nvim_get_current_win()
-        local last_line = vim.api.nvim_buf_line_count(0)
-        vim.api.nvim_win_set_cursor(current_window, {last_line, 0})
+        cpp_build_and_run()
     elseif ((vim.bo.filetype == 'c' or vim.bo.filetype == 'h') and M.hasMakefile())
             or vim.bo.filetype == 'make' then
         if vim.g.executable_name == nil then
@@ -96,11 +148,7 @@ function M.build()
     elseif vim.bo.filetype == 'go' then
         vim.cmd('silent wa | term go build')
     elseif (vim.bo.filetype == 'cpp' or vim.bo.filetype == 'cmake') then
-        vim.cmd('silent wa | CMakeBuild')
-        --vim.cmd('silent wa | term cd build && cmake --build ' .. M.get_cpp_what_to_build() .. ' --parallel 8')
-        --local current_window = vim.api.nvim_get_current_win()
-        --local last_line = vim.api.nvim_buf_line_count(0)
-        --vim.api.nvim_win_set_cursor(current_window, {last_line, 0})
+        cpp_build()
     elseif ((vim.bo.filetype == 'c' or vim.bo.filetype == 'h') and M.hasMakefile())
             or vim.bo.filetype == 'make' then
         vim.cmd('silent wa | term make')
@@ -115,19 +163,7 @@ function M.test()
     elseif vim.bo.filetype == 'go' then
         vim.cmd('silent wa | term gotestsum --format dots-v2')
     elseif vim.bo.filetype == 'cpp' then
-        if vim.g.cpptest == nil then
-            vim.cmd('silent wa | term cd build && cmake --build '
-                .. M.get_cpp_what_to_build()
-                .. ' --parallel 8 && ctest --progress --parallel 8')
-        else
-            vim.cmd('silent wa | term cd build && cmake --build '
-            .. M.get_cpp_what_to_build()
-            .. ' --parallel 8 && '
-            .. vim.g.cpptest)
-        end
-        local current_window = vim.api.nvim_get_current_win()
-        local last_line = vim.api.nvim_buf_line_count(0)
-        vim.api.nvim_win_set_cursor(current_window, {last_line, 0})
+        cpp_build_and_test()
     elseif ((vim.bo.filetype == 'c' or vim.bo.filetype == 'h') and M.hasMakefile())
             or vim.bo.filetype == 'make' then
         vim.cmd('silent wa | term make test')
