@@ -32,7 +32,7 @@ vim.keymap.set("i", "'", "''<left>")
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "markdown", "text" },
   callback = function()
-    vim.keymap.del("i", "'")
+    pcall(vim.keymap.del, "i", "'")
   end,
 })
 vim.keymap.set("i", "(", "()<left>")
