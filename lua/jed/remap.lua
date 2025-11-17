@@ -44,6 +44,13 @@ vim.keymap.set("n", "<Leader>co", "<cmd>lua require('jed.utils').coverage()<CR>"
 
 vim.keymap.set("i", '"', '""<left>')
 vim.keymap.set("i", "'", "''<left>")
+-- disable in markdown and text
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "markdown", "text" },
+  callback = function()
+    pcall(vim.keymap.del, "i", "'")
+  end,
+})
 vim.keymap.set("i", "(", "()<left>")
 vim.keymap.set("i", "[", "[]<left>")
 vim.keymap.set("i", "{", "{}<left>")
