@@ -47,7 +47,12 @@ local function cpp_build_and_test()
       or -1
 
     if exit == 0 then
-        vim.cmd('term cd build && ctest --progress --parallel 8')
+        local outbuild_folder = "build"
+        if vim.g.outbuild ~= nil then
+            outbuild_folder = vim.g.outbuild
+        end
+
+        vim.cmd('term cd '..outbuild_folder..' && ctest --progress --parallel 8')
         local current_window = vim.api.nvim_get_current_win()
         local last_line = vim.api.nvim_buf_line_count(0)
         vim.api.nvim_win_set_cursor(current_window, {last_line, 0})

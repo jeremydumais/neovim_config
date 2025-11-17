@@ -1,7 +1,23 @@
 local M = {}
 vim.g.mapleader = "_"
 
-vim.keymap.set("x", "<leader>p", [["_dP]])
+vim.keymap.set("n", "<leader>p", "<cmd>Telescope yank_history<CR>", { desc = "Paste from yank history" })
+vim.keymap.set("x", "<leader>p", function()
+ -- delete selection into the black hole
+  vim.cmd([[normal! "_d]])
+
+  -- open yank history, override the default action
+  require("telescope").extensions.yank_history.yank_history({
+    attach_mappings = function(_, map)
+      local actions = require("yanky.telescope.mapping")
+      -- replace the default enter action with "put before"
+      map("i", "<CR>", actions.put("P"))  -- 'p' = put before in Yanky’s API
+      map("n", "<CR>", actions.put("P"))
+      return true
+    end,
+  })
+end, { desc = "Replace selection from yank history (paste before)" })
+
 --Replace word in all the file
 vim.keymap.set("n", "<leader>rw", "yiwggVG:s/<C-R><C-\">")
 --Save current file

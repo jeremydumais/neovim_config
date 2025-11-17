@@ -5,14 +5,13 @@
 -- Reserve a space in the gutter
 vim.opt.signcolumn = 'yes'
 
--- Add cmp_nvim_lsp capabilities settings to lspconfig
--- This should be executed before you configure any language server
-local lspconfig_defaults = require('lspconfig').util.default_config
-lspconfig_defaults.capabilities = vim.tbl_deep_extend(
-  'force',
-  lspconfig_defaults.capabilities,
-  require('cmp_nvim_lsp').default_capabilities()
-)
+-- new (Neovim 0.11):
+local cmp_caps = require('cmp_nvim_lsp').default_capabilities()
+
+-- Merge into the global LSP defaults for *all* servers
+vim.lsp.config("*", {
+  capabilities = cmp_caps,  -- merged with core defaults
+})
 
 -- This is where you enable features that only work
 -- if there is a language server active in the file
@@ -35,16 +34,23 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
--- You'll find a list of language servers here:
--- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
--- These are example language servers.
-require('lspconfig').clangd.setup({})
-require('lspconfig').rust_analyzer.setup({})
-require('lspconfig').clangd.setup({})
-require('lspconfig').eslint.setup({})
-require('lspconfig').lua_ls.setup({})
-require('lspconfig').intelephense.setup({})
-require('lspconfig').powershell_es.setup({})
+-- Define per-server configuration
+vim.lsp.config("clangd", {})
+vim.lsp.config("rust_analyzer", {})
+vim.lsp.config("eslint", {})
+vim.lsp.config("vtsls", {})
+vim.lsp.config("lua_ls", {})
+vim.lsp.config("intelephense", {})
+vim.lsp.config("powershell_es", {})
+
+-- Then enable them
+vim.lsp.enable("clangd")
+vim.lsp.enable("rust_analyzer")
+vim.lsp.enable("eslint")
+vim.lsp.enable("vtsls")
+vim.lsp.enable("lua_ls")
+vim.lsp.enable("intelephense")
+vim.lsp.enable("powershell_es")
 
 local cmp = require('cmp')
 

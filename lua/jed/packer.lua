@@ -93,19 +93,19 @@ return require('packer').startup(function(use)
     use 'preservim/nerdcommenter'
     use 'tomasiser/vim-code-dark'
     use 'marko-cerovac/material.nvim'
-    --use({
-        --"jackMort/ChatGPT.nvim",
-        --config = function()
-            --require("chatgpt").setup({
-                --api_key_cmd = "more /home/jed/chatsecret.txt 2>/dev/null"
-            --})
-        --end,
-        --requires = {
-          --"MunifTanjim/nui.nvim",
-          --"nvim-lua/plenary.nvim",
-          --"nvim-telescope/telescope.nvim"
-        --}
-    --})
+    -- Packer
+    use({
+      "jackMort/ChatGPT.nvim",
+        config = function()
+          require("chatgpt").setup()
+        end,
+        requires = {
+          "MunifTanjim/nui.nvim",
+          "nvim-lua/plenary.nvim",
+          "folke/trouble.nvim",
+          "nvim-telescope/telescope.nvim"
+        }
+    })
     use 'Asheq/close-buffers.vim'
 
     use('jose-elias-alvarez/null-ls.nvim')
@@ -123,4 +123,13 @@ return require('packer').startup(function(use)
     }
     use('roxma/vim-tmux-clipboard')
     use('tmux-plugins/vim-tmux-focus-events')
+    use {
+        "gbprod/yanky.nvim",
+        requires = { "nvim-telescope/telescope.nvim" },
+        config = function()
+            require("yanky").setup()
+            require("telescope").load_extension("yank_history")
+        end
+    }
+
 end)
