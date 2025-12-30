@@ -51,8 +51,11 @@ local function cpp_build_and_test()
         if vim.g.outbuild ~= nil then
             outbuild_folder = vim.g.outbuild
         end
-
-        vim.cmd('term cd '..outbuild_folder..' && ctest --progress --parallel 8')
+        local ctestfilterstring = ""
+        if (vim.g.ctestfilter ~= nil) then
+           ctestfilterstring = " -R " .. vim.g.ctestfilter
+        end
+        vim.cmd('term cd '..outbuild_folder..' && ctest --progress --parallel 8 --output-on-failure' .. ctestfilterstring)
         local current_window = vim.api.nvim_get_current_win()
         local last_line = vim.api.nvim_buf_line_count(0)
         vim.api.nvim_win_set_cursor(current_window, {last_line, 0})
